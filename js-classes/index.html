@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Meus contatos</title>
+        <link rel='stylesheet' type='text/css'  href='css/bootstrap.min.css'>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+        <script type="text/javascript" src='js/jquery-3.4.1.min.js'></script>
+        <script type="text/javascript" src='js/bootstrap.min.js'></script>
+        <script type="text/javascript" src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js'></script>
+
+        <script>
+          
+
+                var result = '?results=40';
+                var genderMale = 'gender=male';
+                var genderFemale = 'gender=female';
+
+                insertTable(1);
+
+                function insertTable(gender){
+
+                    var url = 'https://randomuser.me/api/'+result+'&'+genderMale;
+
+                    if(gender == 2) {
+                        url = 'https://randomuser.me/api/'+result+'&'+genderFemale;
+                    }
+
+                    fetch(url)
+                    .then((resp) => resp.json())
+                    .then(function(data) {
+                        let results = data.results; 
+                        return results.map(function(results) { 
+                            var table = document.getElementById('table');
+                            var row = table.insertRow(1);
+                            row.innerHTML = "<tr id=''>"+
+                                                "<td>"+results.name.first+"</td>"+ 
+                                                "<td>"+results.email+"</td>"+
+                                                "<td>"+results.location.city+"</td>"+
+                                                "<td>"+results.location.state+"</td>"+
+                                            "</tr>";
+                        })
+                        
+                    });
+                    $(document).ready( function () {
+                        $('#table').DataTable();
+                    } );
+
+                }
+
+            
+        </script>
+
+    </head>
+    <body>
+
+        <nav class="navbar navbar-dark bg-primary">
+            <span class="navbar-brand  h1 text-dark font-normal">Contatos</span>
+        </nav>
+
+        <div class="col-1  bg-danger position-absolute" style="height: 100vh; margin-top: auto;">
+            <div class="row">
+                <div class="col-2">
+                    <div class="nav flex-column " id="tab"  aria-orientation="vertical">
+                        <a class="nav-link active text-dark " onclick="insertTable(1)">Homens</a>
+                        <a class="nav-link text-dark " onclick="insertTable(2)">Mulheres</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+       <main class="mx-auto col-xl-8  pt-5">
+            <div id="homem">
+                <table class="table" id="table" >
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">Cidade</th>
+                            <th scope="col">Estado</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+       </main>
+        
+    </body>
+</html>
